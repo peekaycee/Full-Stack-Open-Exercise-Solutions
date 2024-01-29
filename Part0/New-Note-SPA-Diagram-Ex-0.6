@@ -1,0 +1,22 @@
+sequenceDiagram
+  participant spa
+  participant Server
+
+  spa ->> server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa 
+  activates the server
+
+
+  
+  SPA ->> Server: SendToServer(note)
+  Server -->> SPA: Server response
+  SPA ->> NotesList: Redraw notes on the page
+
+
+
+
+  SPA ->> Form: Fetch form element
+  Form -->> SPA: Register onsubmit event handler
+
+  SPA ->> Form: Event handler (preventDefault)
+  SPA ->> Form: Create new note
+  SPA ->> NotesList: Add note and redraw
