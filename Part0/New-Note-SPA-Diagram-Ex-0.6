@@ -1,22 +1,32 @@
 sequenceDiagram
   participant spa
-  participant Server
+  participant server
+  participant form
+  participant notesList
+
+  spa ->> form: Register onSubmit event handler
+  form -->> spa: Event handler for form submit
+
+  Note over SPA: Event handler calls e.preventDefault() to prevent default form submission, 
+  Note over SPA: Creates a new note from form data and adds note to notes list 
+  Note over SPA: Redraws notes on the page and finally calls sendToServer(note) to send the new note to the server
+  Note over spa: The spa uses the Javascript code to generate the data from the server
 
   spa ->> server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa 
-  activates the server
+  activate server
+  server ->> spa: 201 Created
+  deactivate server
+  
+  Note over Server: Handles the POST request, stores the note, and sends a response (201 created), which does not require that the spa reload.
+
+  spa -->> notesList: Redraw notes on the page
 
 
   
-  SPA ->> Server: SendToServer(note)
-  Server -->> SPA: Server response
-  SPA ->> NotesList: Redraw notes on the page
+  
+  
+  
 
-
-
-
-  SPA ->> Form: Fetch form element
-  Form -->> SPA: Register onsubmit event handler
-
-  SPA ->> Form: Event handler (preventDefault)
-  SPA ->> Form: Create new note
-  SPA ->> NotesList: Add note and redraw
+  
+  
+  
